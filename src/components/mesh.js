@@ -1,15 +1,34 @@
 'use client';
 
-import { forwardRef, useRef } from 'react';
+import { forwardRef, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { DoubleSide } from 'three';
 
 import { vertex } from '@/glsl/vertex';
 import { fragment } from '@/glsl/fragment';
 
-export const Points = forwardRef((props, ref) => {
+export const Mesh = forwardRef((props, ref) => {
     const { vertices, positions } = props;
     const shaderRef = useRef();
+
+    const [ len, setLen ] = useState(0);
+
+    useLayoutEffect(() => {
+        setLen(ref.current?.geometry.attributes.position.count);
+    }, [ref]);
+
+    // normall we do this one layer up, in the model, but we need
+    // the count from the mesh, so we might as well do it here
+    const [ randoms ] = useMemo(() => {
+        const items = [];
+        for (let i = 0; i < len; i += 3) {
+            const r = Math.random();
+
+            items.push(r, r, r);
+        }
+
+        return [ new Float32Array(items) ];
+    }, [len]);
 
     useFrame((state, delta, xrFrame) => {
         // do animation
@@ -23,12 +42,13 @@ export const Points = forwardRef((props, ref) => {
     return (
         <mesh ref={ref}>
             <icosahedronGeometry
-              args={[1, 3]}
+              toNonIndexed={true}
+              args={[1, 30]}
             >
-                {/* <bufferAttribute attach={'attributes-position'} args={[vertices, 3]} />
-                <bufferAttribute attach={'attributes-aCoords'} args={[positions, 2]} /> */}
+                <bufferAttribute
+                  attach={'attributes-aRandom'}
+                  args={[randoms, 1]} />
             </icosahedronGeometry>
-            {/* <meshBasicMaterial /> */}
             <shaderMaterial
               ref={shaderRef}
               extensions={{ derivatives: "#extension GL_OES_standard_derivatives : enable"}}
@@ -37,12 +57,13 @@ export const Points = forwardRef((props, ref) => {
               }}
               vertexShader={vertex}
               fragmentShader={fragment}
-              side={DoubleSide}
+            //   side={DoubleSide}
               depthTest={false}
-              transparent
+            //   wireframe={true}
+            //   transparent
             />
         </mesh>
     )
 })
 
-Points.displayName = 'Points';
+Mesh.displayName = 'Mesh';
