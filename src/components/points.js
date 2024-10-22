@@ -13,24 +13,22 @@ export const Points = forwardRef((props, ref) => {
 
     useFrame((state, delta, xrFrame) => {
         // do animation
-        // shaderRef.current.uniforms.uTime.value = state.clock.elapsedTime;
+        shaderRef.current.uniforms.uTime.value += delta;
 
         // executes 1/frame, so we can just directly morph the ref with a delta
-        ref.current.rotation.x += 0.01;
-        ref.current.rotation.y += 0.02;
+        // ref.current.rotation.x += 0.01;
+        // ref.current.rotation.y += 0.02;
     })
 
     return (
-        <points ref={ref}>
-            <bufferGeometry
-              width={1}
-              height={1}
-              widthSegments={1}
-              heightSegments={1}
+        <mesh ref={ref}>
+            <icosahedronGeometry
+              args={[1, 3]}
             >
-                <bufferAttribute attach={'attributes-position'} args={[vertices, 3]} />
-                <bufferAttribute attach={'attributes-aCoords'} args={[positions, 2]} />
-            </bufferGeometry>
+                {/* <bufferAttribute attach={'attributes-position'} args={[vertices, 3]} />
+                <bufferAttribute attach={'attributes-aCoords'} args={[positions, 2]} /> */}
+            </icosahedronGeometry>
+            {/* <meshBasicMaterial /> */}
             <shaderMaterial
               ref={shaderRef}
               extensions={{ derivatives: "#extension GL_OES_standard_derivatives : enable"}}
@@ -43,7 +41,7 @@ export const Points = forwardRef((props, ref) => {
               depthTest={false}
               transparent
             />
-        </points>
+        </mesh>
     )
 })
 

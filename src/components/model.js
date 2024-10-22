@@ -50,7 +50,7 @@ export function Model(props) {
                   makeDefault
                   near={0.1}
                   far={3000}
-                  position={[0, 0, 1000]} />
+                  position={[0, 0, 2]} />
             </Suspense>
         </View>
     )

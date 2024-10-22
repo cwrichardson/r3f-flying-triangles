@@ -4,11 +4,11 @@ export const vertex = /* glsl */ `
     varying vec2 vUv;
 
     void main() {
-        vUv = aCoords;
+        vUv = uv;
 
-        vec4 mvPosition = modelViewMatrix * vec4( position, 1. );
-        // start with big particles; give them some perspective
-        gl_PointSize = 200. * ( 1. / - mvPosition.z );
+        vec3 pos = position;
+        pos.x += sin((uv.x + uTime) + 10.0) * 0.1;
+        vec4 mvPosition = modelViewMatrix * vec4( pos, 1. );
         gl_Position = projectionMatrix * mvPosition;
     }
 `;
