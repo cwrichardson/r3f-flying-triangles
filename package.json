@@ -1,6 +1,6 @@
 {
-  "name": "next-threejs-starter",
-  "version": "0.2.0",
+  "name": "r3f-flying-triangles",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "prepare": "panda codegen",
