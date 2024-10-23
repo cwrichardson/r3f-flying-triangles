@@ -32,7 +32,7 @@ export const Mesh = forwardRef((props, ref) => {
 
     useFrame((state, delta, xrFrame) => {
         // do animation
-        shaderRef.current.uniforms.uTime.value += delta;
+        // shaderRef.current.uniforms.uTime.value += delta;
 
         // executes 1/frame, so we can just directly morph the ref with a delta
         // ref.current.rotation.x += 0.01;
@@ -43,13 +43,14 @@ export const Mesh = forwardRef((props, ref) => {
         <mesh ref={ref}>
             <icosahedronGeometry
               toNonIndexed={true}
-              args={[1, 30]}
+              args={[1, 4]}
             >
                 <bufferAttribute
                   attach={'attributes-aRandom'}
                   args={[randoms, 1]} />
             </icosahedronGeometry>
-            <shaderMaterial
+            <meshStandardMaterial color={0xff0000} />
+            {/* <shaderMaterial
               ref={shaderRef}
               extensions={{ derivatives: "#extension GL_OES_standard_derivatives : enable"}}
               uniforms={{
@@ -59,9 +60,9 @@ export const Mesh = forwardRef((props, ref) => {
               fragmentShader={fragment}
             //   side={DoubleSide}
               depthTest={false}
-            //   wireframe={true}
+              wireframe={true}
             //   transparent
-            />
+            /> */}
         </mesh>
     )
 })
