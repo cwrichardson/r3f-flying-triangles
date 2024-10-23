@@ -1,0 +1,17 @@
+import { forwardRef } from 'react';
+
+export const Floor = forwardRef((props, ref) => {
+    return (
+        <mesh
+            rotation-x={-Math.PI / 2}
+            position-y={ -1.1 }
+        >
+            <planeGeometry
+              args={[8, 8, 100, 100]}
+            />
+            <meshStandardMaterial color={0xcccccc} />
+        </mesh>
+    )
+})
+
+Floor.displayName = 'Floor';

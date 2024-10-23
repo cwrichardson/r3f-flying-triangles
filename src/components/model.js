@@ -5,6 +5,7 @@ import { Suspense, useMemo, useRef } from 'react';
 import { PerspectiveCamera } from '@react-three/drei';
 
 import { Mesh } from '@/components/mesh';
+import { Floor } from './floor';
 
 const View = dynamic(() => import('src/components/view')
     .then((mod) => mod.View), {
@@ -46,11 +47,12 @@ export function Model(props) {
                   vertices={vertices}
                   positions={locationCoords}
                   ref={meshRef} />
+                <Floor />
                 <PerspectiveCamera
                   makeDefault
                   near={0.1}
                   far={3000}
-                  position={[0, 0, 2]} />
+                  position={[0, 0.5, 2]} />
                 <ambientLight intensity={0.5} />
                 <directionalLight intensity={0.5} position={[0.5, 0, 0.866]} /> {/* ~60º */}
             </Suspense>
