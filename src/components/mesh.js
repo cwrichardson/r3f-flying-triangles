@@ -8,7 +8,7 @@ import { vertex } from '@/glsl/vertex';
 import { fragment } from '@/glsl/fragment';
 
 export const Mesh = forwardRef((props, ref) => {
-    const { vertices, positions } = props;
+    const { vertices, positions, ...meshProps } = props;
     const shaderRef = useRef();
 
     const [ len, setLen ] = useState(0);
@@ -40,7 +40,7 @@ export const Mesh = forwardRef((props, ref) => {
     })
 
     return (
-        <mesh ref={ref}>
+        <mesh ref={ref} {...meshProps}>
             <icosahedronGeometry
               toNonIndexed={true}
               args={[1, 4]}

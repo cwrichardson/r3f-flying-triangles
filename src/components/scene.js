@@ -50,6 +50,7 @@ export function Scene(props) {
             <Canvas
               className={classes}
               style={styleReset}
+              shadows={true}
               {...canvasProps}
               >
                 <r3f.Out />

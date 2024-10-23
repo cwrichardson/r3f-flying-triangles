@@ -5,9 +5,10 @@ export const Floor = forwardRef((props, ref) => {
         <mesh
             rotation-x={-Math.PI / 2}
             position-y={ -1.1 }
+            receiveShadow
         >
             <planeGeometry
-              args={[8, 8, 100, 100]}
+              args={[15, 15, 100, 100]}
             />
             <meshStandardMaterial color={0xcccccc} />
         </mesh>
