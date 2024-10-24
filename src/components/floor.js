@@ -10,7 +10,7 @@ export const Floor = forwardRef((props, ref) => {
             <planeGeometry
               args={[15, 15, 100, 100]}
             />
-            <meshStandardMaterial color={0xcccccc} />
+            <meshStandardMaterial color={0xffffff} />
         </mesh>
     )
 })

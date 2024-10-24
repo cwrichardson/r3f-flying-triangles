@@ -53,7 +53,7 @@ export function Model(props) {
                   near={0.1}
                   far={3000}
                   position={[2, 2, 2]} />
-                <ambientLight intensity={0.5} />
+                <ambientLight intensity={0.8} />
                 {/* <directionalLight intensity={0.5} position={[0.5, 0, 0.866]} /> ~60º */}
                 {/* <SpotLight /> */}
                 <spotLight
