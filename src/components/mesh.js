@@ -7,6 +7,7 @@ import { DoubleSide } from 'three';
 import { vertex } from '@/glsl/vertex';
 import { fragment } from '@/glsl/fragment';
 import { CustomMaterial, CustomDepthMaterial } from './custom-material';
+import { useControls } from 'leva';
 
 export const Mesh = forwardRef((props, ref) => {
     const { vertices, positions, ...meshProps } = props;
@@ -20,8 +21,20 @@ export const Mesh = forwardRef((props, ref) => {
     }, [ref]);
 
     const uniforms = useMemo(() => ({
+        uProgress: { value: 0.5 },
         uTime: { value: 0 }
     }), [])
+
+    const { progress } = useControls({
+        progress: {
+            value: 0.5,
+            min: 0,
+            max: 1,
+            onChange: (v) => {
+                uniforms.uProgress.value = v;
+            }
+        }
+    })
 
     // normall we do this one layer up, in the model, but we need
     // the count from the mesh, so we might as well do it here
