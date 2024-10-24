@@ -6,11 +6,12 @@ import { DoubleSide } from 'three';
 
 import { vertex } from '@/glsl/vertex';
 import { fragment } from '@/glsl/fragment';
-import { CustomMaterial } from './custom-material';
+import { CustomMaterial, CustomDepthMaterial } from './custom-material';
 
 export const Mesh = forwardRef((props, ref) => {
     const { vertices, positions, ...meshProps } = props;
     const shaderRef = useRef();
+    const shadwoRef = useRef();
 
     const [ len, setLen ] = useState(0);
 
@@ -34,6 +35,7 @@ export const Mesh = forwardRef((props, ref) => {
     useFrame((state, delta, xrFrame) => {
         // do animation
         shaderRef.current.uniforms.uTime.value += delta;
+        shadwoRef.current.uniforms.uTime.value += delta;
 
         // executes 1/frame, so we can just directly morph the ref with a delta
         // ref.current.rotation.x += 0.01;
@@ -54,34 +56,19 @@ export const Mesh = forwardRef((props, ref) => {
                 ref={shaderRef}
                 color={0xff0000}
                 // extensions={{ derivatives: "#extension GL_OES_standard_derivatives : enable"}}
-                vertexShader={ /* glsl */ `
-                    attribute float aRandom;
-                    uniform float uTime;
-    
-                    void main() {
-                        csm_Position += aRandom * (0.5 * sin(uTime) + 0.5) * csm_Normal;
-                    }
-                `}
+                vertexShader={vertex}
                 // fragmentShader={fragment}
               //   side={DoubleSide}
                 // depthTest={false}
                 // wireframe={true}
               //   transparent
               />
+            <CustomDepthMaterial
+                ref={shadwoRef}
+                attach={'customDepthMaterial'}
+                vertexShader={vertex}
+            />
             {/* <meshStandardMaterial color={0xff0000} /> */}
-            {/* <shaderMaterial
-              ref={shaderRef}
-              extensions={{ derivatives: "#extension GL_OES_standard_derivatives : enable"}}
-              uniforms={{
-                  uTime: { value: 0 }
-              }}
-              vertexShader={vertex}
-              fragmentShader={fragment}
-            //   side={DoubleSide}
-              depthTest={false}
-              wireframe={true}
-            //   transparent
-            /> */}
         </mesh>
     )
 })
