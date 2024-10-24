@@ -1,11 +1,12 @@
 'use client';
 
-import { forwardRef, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { forwardRef, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { extend, useFrame } from '@react-three/fiber';
 import { DoubleSide } from 'three';
 
 import { vertex } from '@/glsl/vertex';
 import { fragment } from '@/glsl/fragment';
+import { CustomMaterial } from './custom-material';
 
 export const Mesh = forwardRef((props, ref) => {
     const { vertices, positions, ...meshProps } = props;
@@ -49,7 +50,28 @@ export const Mesh = forwardRef((props, ref) => {
                   attach={'attributes-aRandom'}
                   args={[randoms, 1]} />
             </icosahedronGeometry>
-            <meshStandardMaterial color={0xff0000} />
+            <CustomMaterial
+                ref={shaderRef}
+                color={0xff0000}
+                // extensions={{ derivatives: "#extension GL_OES_standard_derivatives : enable"}}
+                uniforms={{
+                    uTime: { value: 0 }
+                }}
+                vertexShader={ /* glsl */ `
+                    attribute float aRandom;
+                    uniform float uTime;
+    
+                    void main() {
+                        csm_Position += aRandom * (0.5 * sin(uTime) + 0.5) * csm_Normal;
+                    }
+                `}
+                // fragmentShader={fragment}
+              //   side={DoubleSide}
+                // depthTest={false}
+                // wireframe={true}
+              //   transparent
+              />
+            {/* <meshStandardMaterial color={0xff0000} /> */}
             {/* <shaderMaterial
               ref={shaderRef}
               extensions={{ derivatives: "#extension GL_OES_standard_derivatives : enable"}}

@@ -1,3 +1,9 @@
+# Extended Material
+To extend the `MeshStandardMaterial` with out custom shaders, I ended up
+using [Custom Shader Material](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/tree/main) instead of the `extendMaterial` Yuri
+uses in the video. This means we use things like `csm_Position` instead of 
+`transformed`. Read the docs.
+
 # GLBs
 A good source of GLBs is [Sketchfab](https://sketchfab.com/). You can try searching for "Smithsonian" to get some good public domain ones.
 
