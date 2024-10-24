@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
 import { MeshStandardMaterial } from 'three';
 import CustomShaderMaterial from 'three-custom-shader-material';
 
@@ -6,17 +6,17 @@ export const CustomMaterial = forwardRef((props, ref) => {
 	const {
 		vertexShader = '',
 		fragmentShader = '',
-		uniforms = {},
 		...rest
 	} = props;
 	console.log('got props', props)
 
-	const materialRef = useRef();
-	useImperativeHandle(ref, () => materialRef, []);
+	const uniforms = useMemo(() => ({
+		uTime: { value: 0 }
+	}), [])
 
 	return (
 		<CustomShaderMaterial
-			ref={materialRef}
+			ref={ref}
 			baseMaterial={MeshStandardMaterial}
 			vertexShader={vertexShader}
 			// fragmentShader={fragmentShader}
