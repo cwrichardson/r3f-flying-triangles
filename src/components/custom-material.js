@@ -9,7 +9,6 @@ export const CustomMaterial = forwardRef((props, ref) => {
 		uniforms = {},
 		...rest
 	} = props;
-	console.log('got props', props)
 
 	return (
 		<CustomShaderMaterial
