@@ -19,6 +19,10 @@ export const Mesh = forwardRef((props, ref) => {
         setLen(ref.current?.geometry.attributes.position.count);
     }, [ref]);
 
+    const uniforms = useMemo(() => ({
+        uTime: { value: 0 }
+    }), [])
+
     // normall we do this one layer up, in the model, but we need
     // the count from the mesh, so we might as well do it here
     const [ randoms ] = useMemo(() => {
@@ -34,8 +38,8 @@ export const Mesh = forwardRef((props, ref) => {
 
     useFrame((state, delta, xrFrame) => {
         // do animation
-        shaderRef.current.uniforms.uTime.value += delta;
-        shadwoRef.current.uniforms.uTime.value += delta;
+        uniforms.uTime.value += delta;
+        // shadwoRef.current.uniforms.uTime.value += delta;
 
         // executes 1/frame, so we can just directly morph the ref with a delta
         // ref.current.rotation.x += 0.01;
@@ -57,6 +61,7 @@ export const Mesh = forwardRef((props, ref) => {
                 color={0xff0000}
                 // extensions={{ derivatives: "#extension GL_OES_standard_derivatives : enable"}}
                 vertexShader={vertex}
+                uniforms={uniforms}
                 // fragmentShader={fragment}
               //   side={DoubleSide}
                 // depthTest={false}
@@ -66,6 +71,7 @@ export const Mesh = forwardRef((props, ref) => {
             <CustomDepthMaterial
                 ref={shadwoRef}
                 attach={'customDepthMaterial'}
+                uniforms={uniforms}
                 vertexShader={vertex}
             />
             {/* <meshStandardMaterial color={0xff0000} /> */}

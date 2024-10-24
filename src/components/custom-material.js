@@ -6,13 +6,10 @@ export const CustomMaterial = forwardRef((props, ref) => {
 	const {
 		vertexShader = '',
 		fragmentShader = '',
+		uniforms = {},
 		...rest
 	} = props;
 	console.log('got props', props)
-
-	const uniforms = useMemo(() => ({
-		uTime: { value: 0 }
-	}), [])
 
 	return (
 		<CustomShaderMaterial
@@ -32,13 +29,14 @@ export const CustomDepthMaterial = forwardRef((props, ref) => {
 	const {
 		vertexShader = '',
 		fragmentShader = '',
+		uniforms = {},
 		...rest
 	} = props;
 	console.log('got props', props)
 
-	const uniforms = useMemo(() => ({
-		uTime: { value: 0 }
-	}), [])
+	// const uniforms = useMemo(() => ({
+	// 	uTime: { value: 0 }
+	// }), [])
 
 	return (
 		<CustomShaderMaterial
