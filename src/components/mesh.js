@@ -33,7 +33,7 @@ export const Mesh = forwardRef((props, ref) => {
 
     useFrame((state, delta, xrFrame) => {
         // do animation
-        // shaderRef.current.uniforms.uTime.value += delta;
+        shaderRef.current.uniforms.uTime.value += delta;
 
         // executes 1/frame, so we can just directly morph the ref with a delta
         // ref.current.rotation.x += 0.01;
@@ -54,9 +54,6 @@ export const Mesh = forwardRef((props, ref) => {
                 ref={shaderRef}
                 color={0xff0000}
                 // extensions={{ derivatives: "#extension GL_OES_standard_derivatives : enable"}}
-                uniforms={{
-                    uTime: { value: 0 }
-                }}
                 vertexShader={ /* glsl */ `
                     attribute float aRandom;
                     uniform float uTime;
