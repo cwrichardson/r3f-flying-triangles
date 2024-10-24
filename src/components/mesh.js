@@ -63,7 +63,7 @@ export const Mesh = forwardRef((props, ref) => {
         <mesh ref={ref} {...meshProps}>
             <icosahedronGeometry
               toNonIndexed={true}
-              args={[1, 4]}
+              args={[1, 9]}
             >
                 <bufferAttribute
                   attach={'attributes-aRandom'}
