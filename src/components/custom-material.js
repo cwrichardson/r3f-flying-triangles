@@ -31,7 +31,6 @@ export const CustomDepthMaterial = forwardRef((props, ref) => {
 		uniforms = {},
 		...rest
 	} = props;
-	console.log('got props', props)
 
 	// const uniforms = useMemo(() => ({
 	// 	uTime: { value: 0 }
