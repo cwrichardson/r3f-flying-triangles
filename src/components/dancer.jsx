@@ -18,7 +18,7 @@ export const Dancer = forwardRef((props, ref) => {
     // console.log('statue geometry', nodes.mesh_0.geometry)
 
     const geo = useMemo(() => nodes.mesh_0.geometry.toNonIndexed(), []);
-    console.log(geo)
+    // console.log(geo)
     
     const [ len, setLen ] = useState(0); // position count
     const [ positions, setPositions ] = useState([]); // position array
@@ -76,30 +76,29 @@ export const Dancer = forwardRef((props, ref) => {
 
     return (
         <group {...props} dispose={null}>
-        <mesh
-            ref={ref}
-            geometry={geo}
-            // material={materials['default']}
-            scale={scale}
-            {...props}
-        >
-            <bufferAttribute
-                attach={'geometry-attributes-aRandom'}
-                args={[randoms, 1]} />
-            <bufferAttribute
-                attach={'geometry-attributes-aCenter'}
-                args={[centers, 3]} />
-            <CustomMaterial
-                color={0xffffff}
-                vertexShader={vertex}
-                uniforms={uniforms}
-              />
-            <CustomDepthMaterial
-                attach={'customDepthMaterial'}
-                uniforms={uniforms}
-                vertexShader={vertex}
-            />
-        </mesh>
+            <mesh
+                ref={ref}
+                geometry={geo}
+                scale={scale}
+                {...props}
+            >
+                <bufferAttribute
+                    attach={'geometry-attributes-aRandom'}
+                    args={[randoms, 1]} />
+                <bufferAttribute
+                    attach={'geometry-attributes-aCenter'}
+                    args={[centers, 3]} />
+                <CustomMaterial
+                    color={0xffffff}
+                    vertexShader={vertex}
+                    uniforms={uniforms}
+                />
+                <CustomDepthMaterial
+                    attach={'customDepthMaterial'}
+                    uniforms={uniforms}
+                    vertexShader={vertex}
+                />
+            </mesh>
         </group>
     )
 })

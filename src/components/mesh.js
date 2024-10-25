@@ -1,11 +1,10 @@
 'use client';
 
-import { forwardRef, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { extend, useFrame } from '@react-three/fiber';
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { DoubleSide, Vector3 } from 'three';
 
 import { vertex } from '@/glsl/vertex';
-import { fragment } from '@/glsl/fragment';
 import { CustomMaterial, CustomDepthMaterial } from './custom-material';
 import { useControls } from 'leva';
 
