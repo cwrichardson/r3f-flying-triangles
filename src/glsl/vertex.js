@@ -52,20 +52,55 @@ export const vertex = rotationMatrix + /* glsl */ `
         // csm_Position += normal * aRandom * (1. - uProgress);
         
         //// next: progress happens along y axis
-        float prog = (position.y +1.)/2.;
+        // float prog = (position.y +1.)/2.;
+        // float locprog = clamp((uProgress - 0.8 * prog)/0.2, 0., 1.);
+
+        // // when we rotate them, we have to add center back after the rotation
+        // csm_Position = csm_Position - aCenter;
+        // csm_Position *= locprog;
+
+        // csm_Position += aCenter;
+        
+        // csm_Position = rotate(csm_Position,
+        //     vec3(0.0, 1.0, 0.0),
+        //     aRandom * (1. - uProgress) * 3.14159 * 3.);
+        
+        // // csm_Position += normal * aRandom * (1. - uProgress);
+
+        //// Mistake 2: tornado of triangles eats the model
+        // float prog = (position.y +1.)/2.;
+        // float locprog = clamp((uProgress - 0.8 * prog)/0.2, 0., 1.);
+
+        // // when we rotate them, we have to add center back after the rotation
+        // csm_Position = csm_Position - aCenter;
+        // csm_Position += 3. * normal * aRandom * (locprog);
+        
+        // csm_Position *= (1. - locprog);
+
+        // csm_Position += aCenter;
+        
+        // csm_Position = rotate(csm_Position,
+        //     vec3(0.0, 1.0, 0.0),
+        //     aRandom * (locprog) * 3.14159 * 3.);
+
+
+        //// next: make appear/disappear work
+        float prog = (position.x +1.)/2.;
         float locprog = clamp((uProgress - 0.8 * prog)/0.2, 0., 1.);
 
         // when we rotate them, we have to add center back after the rotation
         csm_Position = csm_Position - aCenter;
-        csm_Position *= locprog;
+        csm_Position += 3. * normal * aRandom * (locprog);
+        
+        csm_Position *= (1. - locprog);
 
         csm_Position += aCenter;
         
+        // time "1." at the end is number of rotations; can increase in
+        // whole number increments
         csm_Position = rotate(csm_Position,
             vec3(0.0, 1.0, 0.0),
-            aRandom * (1. - uProgress) * 3.14159 * 3.);
-        
-        // csm_Position += normal * aRandom * (1. - uProgress);
+            aRandom * (locprog) * 3.14159 * 1.);
     }
         
 `;
