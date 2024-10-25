@@ -8,7 +8,7 @@ import { forwardRef, useEffect, useMemo, useState } from 'react';
 import { useControls } from 'leva';
 import { Vector3 } from 'three';
 import { useGLTF } from '@react-three/drei';
-import { CustomMaterial } from './custom-material';
+import { CustomDepthMaterial, CustomMaterial } from './custom-material';
 import { vertex } from '@/glsl/vertex';
 
 export const Dancer = forwardRef((props, ref) => {
@@ -81,6 +81,7 @@ export const Dancer = forwardRef((props, ref) => {
             geometry={geo}
             // material={materials['default']}
             scale={scale}
+            {...props}
         >
             <bufferAttribute
                 attach={'geometry-attributes-aRandom'}
@@ -93,6 +94,11 @@ export const Dancer = forwardRef((props, ref) => {
                 vertexShader={vertex}
                 uniforms={uniforms}
               />
+            <CustomDepthMaterial
+                attach={'customDepthMaterial'}
+                uniforms={uniforms}
+                vertexShader={vertex}
+            />
         </mesh>
         </group>
     )
