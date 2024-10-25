@@ -38,14 +38,16 @@ export const vertex = rotationMatrix + /* glsl */ `
         // when we rotate them, we have to add center back after the rotation
         csm_Position = csm_Position - aCenter;
         csm_Position *= uProgress;
+        // maybe add this in and do both?
+        // csm_Position = rotate(csm_Position,
+        //     vec3(0.0, 1.0, 0.0),
+        //     aRandom * (1. - uProgress) * 3.14159 * 20.);
+        csm_Position += aCenter;
+        
+        csm_Position += normal * aRandom * (1. - uProgress);
+        
         csm_Position = rotate(csm_Position,
             vec3(0.0, 1.0, 0.0),
-            aRandom * (1. - uProgress) * 3.14159 * 20.);
-        csm_Position += aCenter;
-
-        csm_Position += normal * aRandom * (1. - uProgress);
-
-        // vec4 mvPosition = modelViewMatrix * vec4( pos, 1. );
-        // gl_Position = projectionMatrix * mvPosition;
+            aRandom * (1. - uProgress) * 3.14159 * 3.);
     }
 `;
