@@ -15,36 +15,11 @@ const View = dynamic(() => import('src/components/view')
 
 export function Model(props) {
     const meshRef = useRef();
-    const rows = 512;
-    const columns = 512;
-    const halfColumns = Math.floor(columns / 2);
-    const halfRows = Math.floor(rows / 2);
-    
-    const [ vertices, locationCoords ] = useMemo(() => {
-        const positions = [];
-        const coordinates = [];
-        for (let x = 0; x < columns; x++ ) {
-            // center x
-            const posX = x - halfColumns;
-            for ( let y = 0; y < rows; y++ ) {
-                // center y
-                positions.push(posX * 2, (y - halfRows) * 2, 0);
-                coordinates.push(x/columns,y/rows);
-            }
-        }
-
-        return [
-            new Float32Array(positions),
-            new Float32Array(coordinates)
-        ];
-    }, [halfColumns, halfRows])
 
     return (
         <View orbit {...props}>
             <Suspense fallback={null}>
                 <Mesh
-                  vertices={vertices}
-                  positions={locationCoords}
                   castShadow
                   ref={meshRef} />
                 <Floor />
