@@ -5,6 +5,7 @@ export const vertex = rotationMatrix + /* glsl */ `
     uniform float uTime;
     
     // attribute vec2 aCoords;
+    attribute vec3 aCenter;
     attribute float aRandom;
     // varying vec2 vUv;
 
@@ -25,9 +26,14 @@ export const vertex = rotationMatrix + /* glsl */ `
         // csm_Position += uProgress * aRandom * csm_Normal;
         
         // add rotation based on progress, too
-        csm_Position += uProgress * aRandom * csm_Normal;
-        csm_Position = rotate(csm_Position, vec3(0.0, 1.0, 0.0), aRandom * uProgress * 3.14159 * 3.);
+        // csm_Position += uProgress * aRandom * csm_Normal;
+        // csm_Position = rotate(csm_Position, vec3(0.0, 1.0, 0.0), aRandom * uProgress * 3.14159 * 3.);
 
+        // mistake 1: they all go to one triangle
+        // csm_Position *= (csm_Position - aCenter) * uProgress + aCenter;
+
+        csm_Position = (csm_Position - aCenter) * uProgress + aCenter;
+        
         // vec4 mvPosition = modelViewMatrix * vec4( pos, 1. );
         // gl_Position = projectionMatrix * mvPosition;
     }

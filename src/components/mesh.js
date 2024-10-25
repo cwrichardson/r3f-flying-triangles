@@ -1,8 +1,8 @@
 'use client';
 
-import { forwardRef, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { extend, useFrame } from '@react-three/fiber';
-import { DoubleSide } from 'three';
+import { DoubleSide, Vector3 } from 'three';
 
 import { vertex } from '@/glsl/vertex';
 import { fragment } from '@/glsl/fragment';
@@ -10,15 +10,17 @@ import { CustomMaterial, CustomDepthMaterial } from './custom-material';
 import { useControls } from 'leva';
 
 export const Mesh = forwardRef((props, ref) => {
-    const { vertices, positions, ...meshProps } = props;
+    const { ...meshProps } = props;
     const shaderRef = useRef();
-    const shadwoRef = useRef();
+    const shadowRef = useRef();
 
-    const [ len, setLen ] = useState(0);
+    const [ len, setLen ] = useState(0); // position count
+    const [ positions, setPositions ] = useState([]); // position array
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         setLen(ref.current?.geometry.attributes.position.count);
-    }, [ref]);
+        setPositions(ref.current?.geometry.attributes.position.array);
+    }, [ref, ref.current?.geometry.attributes.position.count]);
 
     const uniforms = useMemo(() => ({
         uProgress: { value: 0.5 },
@@ -38,21 +40,40 @@ export const Mesh = forwardRef((props, ref) => {
 
     // normall we do this one layer up, in the model, but we need
     // the count from the mesh, so we might as well do it here
-    const [ randoms ] = useMemo(() => {
+    const [ randoms, centers ] = useMemo(() => {
         const items = [];
-        for (let i = 0; i < len; i += 3) {
-            const r = Math.random();
+        const centers = [];
 
+        for (let i = 0; i < len; i++) {
+            const r = Math.random();
+            
             items.push(r, r, r);
+
+            // get triangle vertices
+            const vs = positions.slice( i * 9, i * 9 + 9);
+
+            // calculate center
+            const center = new Vector3(vs[0], vs[1], vs[2])
+                .add(new Vector3(vs[3], vs[4], vs[5]))
+                .add(new Vector3(vs[6], vs[7], vs[8]))
+                .divideScalar(3);
+            
+            // add 3 times, because each triangle vertex needs the center
+            centers.push(center.x, center.y, center.z);
+            centers.push(center.x, center.y, center.z);
+            centers.push(center.x, center.y, center.z);
         }
 
-        return [ new Float32Array(items) ];
-    }, [len]);
+
+        return [
+            new Float32Array(items),
+            new Float32Array(centers)
+        ];
+    }, [len, positions]);
 
     useFrame((state, delta, xrFrame) => {
         // do animation
-        uniforms.uTime.value += delta;
-        // shadwoRef.current.uniforms.uTime.value += delta;
+        // uniforms.uTime.value += delta;
 
         // executes 1/frame, so we can just directly morph the ref with a delta
         // ref.current.rotation.x += 0.01;
@@ -62,12 +83,14 @@ export const Mesh = forwardRef((props, ref) => {
     return (
         <mesh ref={ref} {...meshProps}>
             <icosahedronGeometry
-              toNonIndexed={true}
               args={[1, 9]}
             >
                 <bufferAttribute
                   attach={'attributes-aRandom'}
                   args={[randoms, 1]} />
+                <bufferAttribute
+                  attach={'attributes-aCenter'}
+                  args={[centers, 3]} />
             </icosahedronGeometry>
             <CustomMaterial
                 ref={shaderRef}
@@ -82,7 +105,7 @@ export const Mesh = forwardRef((props, ref) => {
               //   transparent
               />
             <CustomDepthMaterial
-                ref={shadwoRef}
+                ref={shadowRef}
                 attach={'customDepthMaterial'}
                 uniforms={uniforms}
                 vertexShader={vertex}
