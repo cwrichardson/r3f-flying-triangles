@@ -85,7 +85,7 @@ export const vertex = rotationMatrix + /* glsl */ `
 
 
         //// next: make appear/disappear work
-        float prog = (position.x +1.)/2.;
+        float prog = (csm_Normal.x +1.)/2.;
         float locprog = clamp((uProgress - 0.8 * prog)/0.2, 0., 1.);
 
         // when we rotate them, we have to add center back after the rotation
