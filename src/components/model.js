@@ -7,6 +7,7 @@ import { PerspectiveCamera } from '@react-three/drei';
 import { Mesh } from '@/components/mesh';
 import { Floor } from './floor';
 import { Dancer } from './dancer';
+import { Monster } from './monster';
 
 const View = dynamic(() => import('src/components/view')
     .then((mod) => mod.View), {
@@ -15,13 +16,16 @@ const View = dynamic(() => import('src/components/view')
 );
 
 export function Model(props) {
-    const meshRef = useRef();
+    // const meshRef = useRef();
+    const dancerRef = useRef();
+    const monsterRef = useRef();
 
     return (
         <View orbit {...props}>
             <Suspense fallback={null}>
                 {/* <Mesh ref={meshRef} castShadow /> */}
-                <Dancer ref={meshRef} castShadow />
+                <Dancer ref={dancerRef} castShadow />
+                <Monster ref={monsterRef} castShadow />
                 <Floor />
                 <PerspectiveCamera
                   makeDefault
