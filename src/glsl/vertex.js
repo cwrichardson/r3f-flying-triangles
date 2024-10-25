@@ -28,12 +28,21 @@ export const vertex = rotationMatrix + /* glsl */ `
         // add rotation based on progress, too
         // csm_Position += uProgress * aRandom * csm_Normal;
         // csm_Position = rotate(csm_Position, vec3(0.0, 1.0, 0.0), aRandom * uProgress * 3.14159 * 3.);
-
+        
         // mistake 1: they all go to one triangle
         // csm_Position *= (csm_Position - aCenter) * uProgress + aCenter;
-
-        csm_Position = (csm_Position - aCenter) * uProgress + aCenter;
         
+        // scale individual triangles in place
+        // csm_Position = (csm_Position - aCenter) * uProgress + aCenter;
+        
+        // when we rotate them, we have to add center back after the rotation
+        csm_Position = csm_Position - aCenter;
+        csm_Position *= uProgress;
+        csm_Position = rotate(csm_Position,
+            vec3(0.0, 1.0, 0.0),
+            aRandom * (1. - uProgress) * 3.14159 * 2.);
+        csm_Position += aCenter;
+
         // vec4 mvPosition = modelViewMatrix * vec4( pos, 1. );
         // gl_Position = projectionMatrix * mvPosition;
     }
