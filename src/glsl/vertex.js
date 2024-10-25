@@ -35,19 +35,37 @@ export const vertex = rotationMatrix + /* glsl */ `
         // scale individual triangles in place
         // csm_Position = (csm_Position - aCenter) * uProgress + aCenter;
         
-        // when we rotate them, we have to add center back after the rotation
-        csm_Position = csm_Position - aCenter;
-        csm_Position *= uProgress;
-        // maybe add this in and do both?
+        // // when we rotate them, we have to add center back after the rotation
+        // csm_Position = csm_Position - aCenter;
+        // csm_Position *= uProgress;
+        // // maybe add this in and do both?
+        // // csm_Position = rotate(csm_Position,
+        // //     vec3(0.0, 1.0, 0.0),
+        // //     aRandom * (1. - uProgress) * 3.14159 * 20.);
+        // csm_Position += aCenter;
+        
         // csm_Position = rotate(csm_Position,
         //     vec3(0.0, 1.0, 0.0),
-        //     aRandom * (1. - uProgress) * 3.14159 * 20.);
-        csm_Position += aCenter;
+        //     aRandom * (1. - uProgress) * 3.14159 * 3.);
+        // }
+
+        // csm_Position += normal * aRandom * (1. - uProgress);
         
-        csm_Position += normal * aRandom * (1. - uProgress);
+        //// next: progress happens along y axis
+        float prog = (position.y +1.)/2.;
+        float locprog = clamp((uProgress - 0.8 * prog)/0.2, 0., 1.);
+
+        // when we rotate them, we have to add center back after the rotation
+        csm_Position = csm_Position - aCenter;
+        csm_Position *= locprog;
+
+        csm_Position += aCenter;
         
         csm_Position = rotate(csm_Position,
             vec3(0.0, 1.0, 0.0),
             aRandom * (1. - uProgress) * 3.14159 * 3.);
+        
+        // csm_Position += normal * aRandom * (1. - uProgress);
     }
+        
 `;
