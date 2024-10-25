@@ -1,11 +1,12 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { forwardRef, Suspense, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
-import { PerspectiveCamera, SpotLight } from '@react-three/drei';
+import { Suspense, useRef } from 'react';
+import { PerspectiveCamera } from '@react-three/drei';
 
 import { Mesh } from '@/components/mesh';
 import { Floor } from './floor';
+import { Dancer } from './dancer';
 
 const View = dynamic(() => import('src/components/view')
     .then((mod) => mod.View), {
@@ -19,9 +20,8 @@ export function Model(props) {
     return (
         <View orbit {...props}>
             <Suspense fallback={null}>
-                <Mesh
-                  castShadow
-                  ref={meshRef} />
+                {/* <Mesh ref={meshRef} castShadow /> */}
+                <Dancer ref={meshRef} castShadow />
                 <Floor />
                 <PerspectiveCamera
                   makeDefault
